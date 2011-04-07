@@ -1,0 +1,35 @@
+article.post.box(id="post"+post.id)
+  header
+    hgroup
+      h3
+        a(href=post.url, target="_blank")
+          #{post.title} 
+      
+      h4 Postado por #{post.user}, em #{post.date}
+      h4 Origem #{post.source}, #{post.postDate}
+
+  section.postText
+    !{post.comment}
+    
+  section.postStatus
+      a.postStatusComments(href="#comments", data-post-id=post.id, data-post-comments-loaded="false", title="Clique para ver os comentários")
+        span.postStatusCommentsCount #{post.totalComments}
+        span &nbsp;comentário(s)
+      &nbsp;-
+      a.postStatusNewComment(href="#newComment", data-post-id=post.id, title="Clique para comentar") Comentar
+      
+      &nbsp;|
+      
+      a.postStatusTags(href="#tags", data-post-id=post.id, data-post-tags-loaded="false", title="Clique para ver as tags")
+        span.postStatusTagsCount #{post.totalTags}
+        span &nbsp;tags(s)
+      &nbsp;-
+      a.postStatusNewTag(href="#newTag", data-post-id=post.id, title="Clique para associar tag") Associar Tag
+      
+  
+  section.postTags(style="display: none; margin-top: 5px;", class="ui-corner-all")
+    ul
+    
+  section.postComments(style="display: none; margin-top: 5px;", class="ui-corner-all")
+    ul
+    

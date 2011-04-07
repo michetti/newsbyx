@@ -1,0 +1,8 @@
+li
+  article.comment(data.post-comment-id=comment.id)
+    header
+        h5 <span class="commentUserGravatar" data-user-email="#{comment.user}"></span> !{comment.user}, !{comment.date}
+    
+    section.commentText
+      !{comment.comment}
+

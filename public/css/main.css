@@ -1,0 +1,217 @@
+body {
+  font-size: 80%;
+  margin: 0;
+}
+
+body:before {
+  content: "";
+  position: fixed;
+  top: -10px;
+  left: 0;
+  width: 100%;
+  height: 10px;
+
+  -webkit-box-shadow: 0px 0px 10px rgba(0,0,0,.8);
+  -moz-box-shadow: 0px 0px 10px rgba(0,0,0,.8);
+  box-shadow: 0px 0px 10px rgba(0,0,0,.8);
+
+  z-index: 100;
+}
+
+header.appHeader div.appTitle {
+	height: 60px;
+}
+
+header.appHeader {
+	background: url(../images/bg-texture.png) 0 0 repeat;
+}
+
+header.appHeader h1 {
+	margin: 0px;
+	padding: 0 140px;
+	position: relative;
+	top: 15px;
+}
+
+nav.appNav {
+	height: 42px;
+	color: white;
+	padding: 0 140px;
+	margin: 0;
+	background-color: black;
+	
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-pack: center;
+  
+  -webkit-box-shadow: 0px 0px 10px rgba(0,0,0,.8);
+}
+
+.appNav div {
+	-webkit-box-flex: 1;
+	text-align: center;
+	border-left: 1px dotted gray;
+	cursor: pointer;
+}
+
+.appNav div.last {
+	border-right: 1px dotted gray;
+}
+
+.appNav div:hover {
+	background-color: rgba(255, 215, 0, .9 );
+  -webkit-box-shadow: 0px -5px 20px rgba(0,0,0,.8);
+}
+
+.appNav div a {
+	position: relative;
+	top: 11px;
+	font-family: 'Times New Roman';
+	font-size: 16px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	color: white;
+}
+
+.content {
+	min-height: 450px;
+	padding: 0 140px;
+	background-color: white;
+	margin-bottom: 80px;
+}
+
+.box {
+}
+
+.post {
+	padding-bottom: 25px;
+	border-bottom: 1px dotted gray;
+}
+
+.post h3 {
+  margin: 0;
+}
+
+.post h3 a {
+  letter-spacing: -0.05em;
+  text-decoration: none;
+  color: black;
+  font-family: Helvetica,sans-serif;
+  font-size: 30px;
+  line-height: 30px;
+  font-weight: normal;
+  margin: 0px;
+}
+
+.post h3 a:hover {
+	color: blue;
+}
+
+.post h4 {
+	font-family: georgia, serif;
+	font-size: 13px;
+	font-style: italic;
+	font-variant: normal;
+	font-weight: normal;
+	line-height: 20px;
+	margin: 2px 0;
+}
+
+.postText {
+	font-size: 1.3em;
+}
+
+.rightControls {
+	padding-top: 15px;
+	text-align: right;
+}
+
+footer {
+	padding-top: 15px;
+	border-top: 1px solid #ccc;
+	text-align: center;
+	
+	background: url(../images/bg-texture.png) 0 0 repeat;
+	
+	position: fixed;
+	bottom: 0px;
+	height: 45px;
+	width: 100%;
+}
+
+header {
+	padding-top: 15px;
+	font-family: 'Times New Roman';
+	font-size: 16px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	line-height: normal;
+	color: rgba(0,0,0,.4);
+}
+
+h2 {
+	margin: 0;
+}
+
+label {
+	font-weight: bold;
+}
+
+form label,input {
+	display: block;
+	
+}
+
+form input {
+	margin-bottom:10px; width:95%; padding: .4em;
+}
+
+section.postComments {
+  background-color: rgba(0,0,0,.2);
+  padding: 15px 0;
+}
+
+section.postComments ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0 15px;
+}
+
+section.postComments li {
+	margin-bottom: 20px;
+}
+
+section.postComments p {
+	margin: 5px 0;
+}
+
+section.postComments header {
+	padding: 0;
+}
+
+section.postComments h5 {
+	margin: 5px 0;
+	font-size: 14px;
+}
+
+
+section.postTags {
+  background-color: rgba(0,0,0,.2);
+  padding: 0;
+  margin: 0;
+  height: 45px;
+}
+
+section.postTags ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0 15px;
+}
+
+section.postTags li {
+  float: left;
+  padding: 15px 15px 15px 0;
+  
+}

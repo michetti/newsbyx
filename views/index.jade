@@ -1,0 +1,237 @@
+script(type="text/javascript", src="js/publisherFactory.js")
+script(type="text/javascript", src="js/readerFactory.js")
+script(type="text/javascript", src="ckeditor/ckeditor.js")
+
+script(type='text/javascript')
+  var socket = new io.Socket('localhost');
+  var jade = require('jade');
+  var publisher = newPublisher(socket);
+  var reader = newReader(socket, jade, "#postsContainer", "section.postComments ul", "section.postTags ul");
+  
+  socket.on('connect', function() {
+    console.log('Cliente Conectado');
+  });
+  
+  socket.on('message', function(data) {
+    console.log('Mensagem recebida');
+    console.log(data);
+    
+    reader.receive(data);
+  });
+  
+  socket.on('disconnect', function() {
+    console.log('Cliente Desconectado');
+  });
+  
+  $(function() {
+    socket.connect();
+    
+    // New Post dialog
+    $("#newPostContainer").dialog({
+      autoOpen: false,
+      height: 680,
+      width: 800,
+      modal: true,
+      buttons: {
+        "Cancelar": function() {
+          $("form", "#newPostContainer")[0].reset();
+          ckNewPost.setData("");
+          
+          $(this).dialog('close');
+        },
+        
+        "Postar": function() {
+          var title = $("#newPost-title").val();
+          var url = $("#newPost-url").val();
+          var source = $("#newPost-source").val();
+          var postDate = $("#newPost-postDate").val();
+          var user = localStorage.getItem("identification");
+          var comment = ckNewPost.getData();
+          
+          publisher.publish(title, url, source, postDate, user, comment, function() {
+            $("form", "#newPostContainer")[0].reset();
+            ckNewPost.setData("");
+            
+            $("#newPostContainer").dialog('close');
+          });
+        }
+      }
+    });
+    
+    // Post Comment dialog
+    $("#newCommentContainer").dialog({
+      autoOpen: false,
+      height: 430,
+      width: 800,
+      modal: true,
+      buttons: {
+        "Cancelar": function() {
+          ckNewComment.setData("");
+          $(this).dialog('close');
+        },
+        
+        "Comentar": function() {
+          var postId = $(this).data("post-id");
+          var comment = ckNewComment.getData();
+          var user = localStorage.getItem("identification");
+          
+          publisher.comment(postId, user, comment, function() {
+            ckNewComment.setData("");
+            $("#newCommentContainer").dialog('close');
+          });
+          
+        }
+      }
+    });
+    
+    // Post Tag dialog
+    $("#newTagContainer").dialog({
+      autoOpen: false,
+      height: 200,
+      width: 500,
+      modal: true,
+      buttons: {
+        "Fechar": function() {
+        $("#newTag-Tag").val("");
+          $(this).dialog('close');
+        },
+        
+        "Associar": function() {
+          var postId = $(this).data("post-id");
+          var tag = $("#newTag-Tag").val();
+          
+          publisher.tag(postId, tag, function() {
+            $("#newTag-Tag").val("");
+            $("#newTag-Tag").focus();
+          });
+          
+        }
+      }
+    });    
+    
+    // Identification dialog
+    $("#identificationContainer").dialog({
+      autoOpen: false,
+      height: 200,
+      width: 500,
+      modal: true,
+      buttons: {
+        "Ok": function() {
+          localStorage.setItem("identification", $("#identification").val());
+          $(this).dialog('close');
+        }
+      }
+    });      
+    
+    // Start CKEditor
+    var ckNewPost = CKEDITOR.replace( 'newPost-comment', {
+      toolbar :
+        [
+          ['Undo', 'Redo'],
+          ['Styles','Format'],
+          ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', '-','Outdent','Indent']
+        ],
+    });
+    
+    var ckNewComment = CKEDITOR.replace( 'newComment-comment', {
+      toolbar :
+        [
+          ['Undo', 'Redo'],
+          ['Styles','Format'],
+          ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', '-','Outdent','Indent']
+        ],
+    });    
+    
+    // Bind buttons
+    $("#showAddPost").click(function() {
+      $("#newPostContainer").dialog('open');
+    });
+    
+    $("a.postStatusComments", "#postsContainer").live('click', function() {
+      var postId = $(this).data("post-id");
+      var commentsLoaded = $(this).data("post-comments-loaded");
+      
+      if (commentsLoaded === false) {
+        console.log("Carregando comentarios");
+      
+        publisher.readComments(postId);
+        $(this).data("post-comments-loaded", true);
+      }
+      
+      var commentsContainer =$("section.postComments", "#post" + postId);
+      commentsContainer.slideToggle('slow');
+    });
+    
+    $("nav.appNav div").live('click', function() {
+      var postId = $(this).data("post-id");
+    });
+    
+    $("a.postStatusNewComment", "#postsContainer").live('click', function() {
+      var postId = $(this).data("post-id");
+      
+      $("#newCommentContainer").data("post-id", postId);
+      $("#newCommentContainer").dialog('open');
+    });
+    
+    $("a.postStatusTags", "#postsContainer").live('click', function() {
+      var postId = $(this).data("post-id");
+      var tagsLoaded = $(this).data("post-tags-loaded");
+      
+      if (tagsLoaded === false) {
+        console.log("Carregando tags");
+      
+        publisher.readTags(postId);
+        $(this).data("post-tags-loaded", true);
+      }
+      
+      var tagsContainer = $("section.postTags", "#post" + postId);
+      tagsContainer.slideToggle('slow');
+    });
+    
+    $("a.postStatusNewTag", "#postsContainer").live('click', function() {
+      var postId = $(this).data("post-id");
+      
+      $("#newTagContainer").data("post-id", postId);
+      $("#newTagContainer").dialog('open');
+    });
+    
+    $("#mudarUsuario").click(function() {
+      $("#identificationContainer").dialog('open');
+    });
+    
+    // Tag comments
+    $(".tagMenuItem").live('click', function() {
+      var tag = $(this).data("tag");
+      publisher.readTagPosts(tag);
+    });
+    
+    // Check if user is identified
+    if (!localStorage.getItem("identification")) {
+      $("#identificationContainer").dialog('open');
+    }
+    
+  });
+
+
+section.posts
+  header
+    h2(style="height: 35px;")
+      div(style="float: left;") Últimos Posts
+      div(style="float: right;")
+        button(type="button", id="showAddPost") Novo Post
+  
+  #postsContainer
+    - var post = partial('../public/template/post.jade', data.posts)
+    !{post}
+    
+  - var addPost = partial('../public/template/addPost.jade')
+  | !{addPost}
+  
+  - var addComment = partial('../public/template/addComment.jade')
+  | !{addComment}
+  
+  - var addTag = partial('../public/template/addTag.jade')
+  | !{addTag}
+  
+  - var identification = partial('../public/template/identification.jade')
+  | !{identification}  

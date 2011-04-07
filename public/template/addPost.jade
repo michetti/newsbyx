@@ -1,0 +1,17 @@
+div#newPostContainer(style="display: none;", title="Novo Post")
+  form
+    fieldset
+      label(for="newPost-title") Título
+      input(type="text", id="newPost-title", style="width: 420px;", placeholder="Ex: Firefox 4 Lançado!", class="ui-corner-all")
+  
+      label(for="newPost-url") URL
+      input(type="url", id="newPost-url", style="width: 360px;", placeholder="Ex: http://www.mozilla.org/firefox4", class="ui-corner-all")
+  
+      label(for="newPost-source") Origem
+      input(type="text", id="newPost-source", style="width: 260px;", placeholder="Ex: Mozilla", class="ui-corner-all")
+      
+      label(for="newPost-postDate") Data Publicação
+      input(type="text", id="newPost-postDate", style="width: 160px;", placeholder="Ex: 04/04/2011 8:22", class="ui-corner-all")
+  
+      label(for="newPost-comment") Comentário
+      textarea(id="newPost-comment")
