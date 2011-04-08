@@ -1,2 +1,19 @@
+* NewsByX
+
 Side de noticias construido usando Node.js, Socket.IO, Express, Redis e HTML 5.
-Por enquanto, so funciona nas ultimas versões do Chrome, sem validação, sem login de usuários.
+Por enquanto, so funciona nas ultimas versões do Chrome, sem validação, sem login de usuários, etc.
+
+
+* Pré-Requisitos
+
+- Redis
+- Node.js
+- Npm
+
+
+* Módulos Node.js
+
+- express
+- jade
+- socket.io
+- redis
